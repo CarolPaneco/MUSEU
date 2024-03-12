@@ -1,0 +1,2714 @@
+#include<stdio.h>
+#include<conio.h>
+#include<stdlib.h>
+#include<locale.h>
+#include<string.h>
+#include <unistd.h>
+
+void top();
+void cadastrar();
+void bilheteria();
+void escolha();
+void escolha_100anos();
+void escolha_150santos();
+void escolha_copa();
+void escolha_ia();
+void finalizar_compra();
+void exposicoes();
+void entrada();
+void avaliar();
+void acesso_ti();
+void escolha_150santo();
+void acesso_ti();
+void avaliacao_100anos();
+void avaliacao_150santo();
+void avaliacao_copa();
+void avaliacao_ia();
+void avaliacao_150santos();
+void relatorio_venda();
+void relatorio_avaliacoes();
+void listar();
+int i = 0;
+int num_compras = 0;
+void pesquisar_cadastro();
+void pesquisar_entrada();
+
+
+typedef struct//cadastro
+{
+	char nome[30];
+	char cpf[11];
+	int idade; 
+	char telefone[15];
+	char genero[15];
+	char estudante[20];
+	char pcd[20];
+	char associado[20];
+	char beneficio_idade[20];
+}CD;
+
+CD cd[100];
+
+  typedef struct//vendas
+{
+	char vnome[30];
+	char vcpf[15];
+	int vidade; 
+	char vtelefone[15];
+	char vgenero[15];
+	char vestudante[20];
+	char vpcd[20];
+	char vassociado[20];
+	int vpreco;
+	char vexposicao[100];
+	char beneficio_idade[20];
+	int escolha;
+	int quantidade;
+	char exposicao_escolhi[100];
+	int valorfinal;
+}VD;
+
+VD vd[100];
+
+typedef struct
+{
+	float gostou;
+	float util;
+	float recomenda;
+	char cpf[15];
+	char exposicao[50];
+	char nome[50];
+	int idade;
+	char genero[10];
+	
+}AD;
+
+AD ad[100];
+
+int main()//main
+{
+    int i = 0;
+    
+	setlocale(LC_ALL, "Portuguese");
+	
+	int opcao;
+	
+	do
+	{
+              system("cls");
+        top();
+        printf("1-Cadastre-se\n");
+        printf("2-Bilheteria.\n");
+        printf("3-Exposicoes.\n");
+        printf("4-Entrada.\n");
+        printf("5-Avaliacao.\n");
+        printf("6-Acesso TI.\n");
+        printf("7-Sair.\n");
+        printf("Escolha uma opcao acima! :)\n");
+        scanf("%d", &opcao);
+        
+        switch(opcao)
+        {
+        	case 1:
+        		cadastrar();
+        	break;
+		
+			case 2: 
+				bilheteria();
+			break;
+			
+			case 3:
+				exposicoes();
+			break;
+			
+			case 4:
+				entrada();
+			break;
+				
+			case 5:
+				avaliar();
+			break;
+			
+			case 6:
+				acesso_ti();
+			break;
+		}
+        
+	}while(opcao!=7);
+	return 0;
+}
+
+void top()//cabecalho
+{
+	system("cls");
+    printf("--------------------------------\n");
+    printf("          MUSEU CJHBT         \n");
+    printf("--------------------------------\n\n");
+}	
+
+void cadastrar()//cadastros dos clientes
+{
+	FILE*cadastros;
+
+	int i = 0;
+	int genero1;
+	char estudante1[2];
+	char pcd1[2];
+	char associado1[2];
+	
+	cadastros = fopen ("cadastro_cliente.txt", "a");
+	
+	if(cadastros == NULL)
+	{
+		printf("Falha na abertura do arquivo!");
+	}
+	else
+	{
+		
+			system("cls");
+			top();
+			printf("-----------CADASTRO-----------\n");
+			printf("Digite seu nome: ");
+			scanf("%s", &cd[i].nome);//nome
+			fprintf(cadastros,"%s",cd[i].nome);
+			fprintf(cadastros,"|");
+			
+			printf("\nDigite seu CPF: ");//cpf
+			scanf("%s", &cd[i].cpf);
+			fprintf(cadastros,"%s",cd[i].cpf);
+			fprintf(cadastros,"|");
+			
+			printf("\nDigite seu telefone: ");//telefone
+			scanf("%s", &cd[i].telefone);
+			fprintf(cadastros, "%s", cd[i].telefone);
+			fprintf(cadastros,"|");
+			
+			printf("\nDigite sua idade: ");
+			scanf("%i", &cd[i].idade);
+			fprintf(cadastros, "%i", cd[i].idade);
+			fprintf(cadastros,"|");
+			
+				if (cd[i].idade <18)//menor idade
+				{
+					snprintf(cd[i].beneficio_idade, sizeof(cd[i].beneficio_idade), "Menor de idade");
+					fprintf(cadastros,"%s", cd[i].beneficio_idade);
+					fprintf(cadastros,"|");
+				}
+				else if (cd[i].idade >= 65)//maior idade
+				{
+					snprintf(cd[i].beneficio_idade, sizeof(cd[i].beneficio_idade), "Maior idade");
+					fprintf(cadastros,"%s", cd[i].beneficio_idade);
+					fprintf(cadastros,"|");
+				}
+				else//sem beneficio idade
+				{
+					snprintf(cd[i].beneficio_idade, sizeof(cd[i].beneficio_idade), "Sem beneficio idade");
+					fprintf(cadastros,"%s", cd[i].beneficio_idade);
+					fprintf(cadastros,"|");
+				}
+				
+			
+			while(1)//genero
+			{
+				printf("\n\n1-Masculino\n2-Feminio\n3-Nao quero iformar\nDigite seu genero: ");
+			scanf("%i", &genero1);
+			if (genero1 == 1)
+			{
+				snprintf(cd[i].genero, sizeof(cd[i].genero), "Masculino");
+				fprintf(cadastros,"%s", cd[i].genero);
+				fprintf(cadastros,"|");
+				break;
+			}
+			else if(genero1 == 2)
+			{
+				snprintf(cd[i].genero, sizeof(cd[i].genero), "Feminino");
+				fprintf(cadastros,"%s", cd[i].genero);
+				fprintf(cadastros,"|");
+				break;
+			}
+			else if (genero1 == 3)
+			{
+				snprintf(cd[i].genero, sizeof(cd[i].genero), "Anonino");
+				fprintf(cadastros,"%s", cd[i].genero);
+				fprintf(cadastros,"|");
+				break;
+			}
+			else 
+			{
+				printf("\nCodigo invalido! Responda novamente.");
+			}
+			
+			}
+			
+			
+			while(1)//estudante
+			{
+				printf("\nVoce e estudante?(s/n): ");
+				scanf("%s", &estudante1);
+				
+				if (strcmp(estudante1,"s")==0)
+				{
+					snprintf(cd[i].estudante, sizeof(cd[i].estudante), "Estudante");
+					fprintf(cadastros, "%s", cd[i].estudante);
+					fprintf(cadastros,"|");
+					break;
+				}
+				else if (strcmp(estudante1,"n")==0)
+				{
+					snprintf(cd[i].estudante, sizeof(cd[i].estudante), "Nao estudante");
+					fprintf(cadastros, "%s", cd[i].estudante);
+					fprintf(cadastros,"|");
+					break;
+				}
+				else 
+				{
+					printf("Caracter invalido! Responda novamente.");
+				}
+			}
+			
+			while(1)//pcd
+			{
+				printf("\nVoce e PCD?(s/n): ");
+				scanf("%s", &pcd1);
+				
+				if (strcmp(pcd1,"s")==0)
+				{
+					snprintf(cd[i].pcd, sizeof(cd[i].pcd), "PCD");
+					fprintf(cadastros, "%s", cd[i].pcd);
+					fprintf(cadastros,"|");
+					break;
+				}
+				else if (strcmp(pcd1,"n")==0)
+				{
+					snprintf(cd[i].pcd, sizeof(cd[i].pcd), "Nao PCD");
+					fprintf(cadastros, "%s", cd[i].pcd);
+					fprintf(cadastros,"|");
+					break;
+				}
+				else 
+				{
+					printf("Caracter invalido! Responda novamente.");
+				}
+			}
+			
+			while(1)//associado
+			{
+				printf("\nVoce e associado do museu?(s/n): ");
+				scanf("%s", &associado1);
+				
+				if (strcmp(associado1,"s")==0)
+				{
+					snprintf(cd[i].associado, sizeof(cd[i].associado), "Associado");
+					fprintf(cadastros, "%s", cd[i].associado);
+					fprintf(cadastros,"|");
+					break;
+				}
+				else if (strcmp(associado1,"n")==0)
+				{
+					snprintf(cd[i].associado, sizeof(cd[i].associado), "Nao associado");
+					fprintf(cadastros, "%s", cd[i].associado);
+					fprintf(cadastros,"|");
+					break;
+				}
+				else 
+				{
+					printf("Caracter invalido! Responda novamente.");
+				}
+			}
+	
+	fprintf(cadastros,"\n\n");
+	
+	printf("\nObrigada por se cadastrar! :) Em 2 segundos voltara ao menu ");
+	sleep(2);
+
+
+	fclose(cadastros);
+			
+	}
+	
+}
+
+void bilheteria()
+{
+	FILE *cadastros, *vendas;
+	
+	int i = 0;
+	char vcpf[15];
+	
+	top();
+	printf("-----------BILHETERIA-------------\n");
+	
+	cadastros = fopen ("cadastro_cliente.txt","r");
+	vendas = fopen ("venda.txt", "a");
+	
+	if (cadastros == NULL)
+	{
+		printf("Erro ao abrir o arquivo cadastros!");
+	}
+	else
+	{
+		if(vendas == NULL)
+		{
+			printf("Erro ao abrir o arquivo vendas!");
+		}
+		else 
+		{
+			printf("Digite seu CPF: ");
+			scanf("%s", &vcpf);
+			
+			for(i = 0; i<100; i++)
+			{
+				if(strcmp(vcpf,cd[i].cpf)==0)
+				{
+					printf("\nSeu cadastro:\n\n");
+					printf("Nome: %s", cd[i].nome);//nome
+					strcpy(vd[i].vnome, cd[i].nome);//copiando nome de cadastro para nome de vendas
+					fprintf(vendas,"%s",vd[i].vnome);
+					fprintf(vendas, "|");
+					
+					printf("\nCPF: %s", cd[i].cpf);
+					strcpy(vd[i].vcpf, cd[i].cpf);
+					fprintf(vendas,"%s",vd[i].vcpf);
+					fprintf(vendas, "|");
+					
+					printf("\nNumero de telefone: %s", cd[i].telefone);
+					strcpy(vd[i].vtelefone, cd[i].telefone);
+					fprintf(vendas,"%s",vd[i].vtelefone);
+					fprintf(vendas, "|");
+					
+					printf("\nIdade: %i", cd[i].idade);
+					(vd[i].vidade == cd[i].idade);
+					fprintf(vendas,"%s",vd[i].vidade);
+					fprintf(vendas, "|");
+					
+					printf("\n%s", &cd[i].beneficio_idade);
+					strcpy(vd[i].beneficio_idade, cd[i].beneficio_idade);
+					fprintf(vendas,"%s",vd[i].beneficio_idade);
+					fprintf(vendas, "|");
+					
+					printf("\nGenero: %s", cd[i].genero);
+					strcpy(vd[i].vgenero, cd[i].genero);
+					fprintf(vendas,"%s",vd[i].vgenero);
+					fprintf(vendas, "|");
+					
+					if (strcmp(cd[i].estudante,"Estudante")==0)
+					{
+						printf("\nEstudante.");
+					}
+					else;
+					strcpy(vd[i].vestudante, cd[i].estudante);
+					fprintf(vendas,"%s",vd[i].vestudante);
+					fprintf(vendas, "|");
+					
+					if (strcmp(cd[i].pcd, "PCD")==0)
+					{
+						printf("PCD.");
+					}
+					else;
+					strcpy(vd[i].vpcd, cd[i].pcd);
+					fprintf(vendas,"%s",vd[i].vpcd);
+					fprintf(vendas, "|");
+					
+					if(strcmp(cd[i].associado,"Associado")==0)
+					{
+						printf("Associado.");
+					}
+					else;
+					strcpy(vd[i].vassociado, cd[i].associado);
+					fprintf(vendas,"%s",vd[i].vassociado);
+					fprintf(vendas, "|");
+					
+					printf("\n\nEm dez segundos vamos a ala de compra! :)");
+					sleep(2);
+					escolha();
+				}
+				else
+				{
+					printf("Cliente nao encontrado...");
+					sleep(2);
+					return;
+				}
+			}
+			
+		}
+	}
+	
+	fprintf(vendas, "\n\n");
+	fclose(cadastros);
+	fclose(vendas);
+}
+void escolha()
+{
+	FILE*vendas;
+	int quantidade;
+	int escolha1;
+	vendas = fopen("venda.txt", "r+");
+	int i = 0;
+	
+	if (vendas = NULL)
+	{
+		printf("Erro ao abrir arquivo");
+	}
+	else 
+	{
+		system ("cls");
+		top();
+		printf("-----------BILHETERIA-------------\n");
+		printf("---------ALA DE COMPRAS-----------\n");
+		printf("\nQuantas exposicoes deseja comprar?");
+		scanf("%i", &quantidade);
+		vd[i].quantidade = quantidade;
+		fprintf(vendas,"%s exposicao(oes)",vd[i].quantidade);
+		fprintf(vendas, "|");
+		
+			for (i=0; i < quantidade; i++)
+		{
+			printf("1-Comprar exposicao 100 anos da semana da arte moderna.\n2-Comprar exposicao 150 anos de Santos Drumont.\n3-Comprar exposicao Jogos Olimpicos Paris 2024.");
+			printf("\n4-Comprar exposicao Inteligencia artificial.\nEscolha: ");
+			scanf("%i", &escolha1);
+			
+			if (escolha1 == 1)
+			{
+			
+					system ("cls");
+					top();
+					printf("-----------BILHETERIA-------------\n");
+					printf("---------ALA DE COMPRAS-----------\n");
+					
+					snprintf(vd[i].vexposicao, sizeof(vd[i].vexposicao),"100 anos da semana da arte moderna");
+					fprintf(vendas,"%s", vd[i].vexposicao);
+					fprintf(vendas,"|");
+					
+					
+					printf("Voce escolheu a exposicao '100 anos da semana de arte moderna'");
+					printf("\n\nO valor do ingresso e R$20.00.\nCaso tenha algum beneficio vai ser aplicado quando finalizar a escolha.\n\n");
+					sleep(1);
+			}
+			else if (escolha1 == 2)
+			{
+				system ("cls");
+				top();
+					printf("-----------BILHETERIA-------------\n");
+					printf("---------ALA DE COMPRAS-----------\n");
+					
+					snprintf(vd[i].vexposicao, sizeof(vd[i].vexposicao),"'150 anos de Santos Drumont'");
+					fprintf(vendas,"%s", vd[i].vexposicao);
+					fprintf(vendas,"|");
+					
+					
+					printf("Voce escolheu a exposicao '150 anos de Santos Drumont");
+					printf("\n\nO valor do ingresso e R$30.00.\nCaso tenha algum beneficio vai ser aplicado quando finalizar a escolha.\n\n");
+					sleep(1);
+			}
+			else if (escolha1 == 3)
+			{
+				system ("cls");
+				top();
+					printf("-----------BILHETERIA-------------\n");
+					printf("---------ALA DE COMPRAS-----------\n");
+					
+					snprintf(vd[i].vexposicao, sizeof(vd[i].vexposicao),"'Jogos Olimpicos de Paris 2024'");
+					fprintf(vendas,"%s", vd[i].vexposicao);
+					fprintf(vendas,"|");
+					
+					
+					printf("Voce escolheu a exposicao 'Jogos Olimpicos de Paris 2024");
+					printf("\n\nO valor do ingresso e R$40.00.\nCaso tenha algum beneficio vai ser aplicado quando finalizar a escolha.\n\n");
+					sleep(1);
+			}
+			else if (escolha1 == 4)
+			{
+				system ("cls");
+				top();
+					printf("-----------BILHETERIA-------------\n");
+					printf("---------ALA DE COMPRAS-----------\n");
+					
+					snprintf(vd[i].vexposicao, sizeof(vd[i].vexposicao),"'Inteligencia artificial'");
+					fprintf(vendas,"%s", vd[i].vexposicao);
+					fprintf(vendas,"|");
+					
+					
+					printf("Voce escolheu a exposicao 'Inteligencia artificial");
+					printf("\n\nO valor do ingresso e R$50.00.\nCaso tenha algum beneficio vai ser aplicado quando finalizar a escolha.\n\n");
+					sleep(1);
+			}
+			else
+			{
+				printf("Numero invalido, tente novamente!");
+				return;
+			}
+			
+		}//for
+		
+		
+		printf("\n\nEm 5 segundos vamos finalizar a compra! :)");
+		sleep(1);
+		finalizar_compra();
+	
+		
+	}
+	fprintf(vendas, "\n\n");
+	fclose (vendas);
+}
+
+void finalizar_compra()
+{
+    FILE *vendas;
+    int quantidade1;
+    vendas = fopen("venda.txt", "r+");
+    quantidade1 = vd[i].quantidade;
+
+    if (vendas == NULL)
+    {
+        printf("Erro ao encontrar arquivo!");
+        sleep(1);
+        return;
+    }
+    else
+    {
+        system("cls");
+        top();
+        printf("-----------BILHETERIA-------------\n");
+        printf("---------COMPRA FINALIZADA    -----------\n");
+
+        int preco_final = 0;
+
+        // Loop para calcular o preço final
+        for (int i = 0; i < quantidade1; i++)
+        {
+            printf("\nResumo da compra %d:\n", i + 1);
+            printf("Exposicao escolhida: %s\n", vd[i].vexposicao);
+
+            if (strcmp(vd[i].vexposicao, "100 anos da semana da arte moderna") == 0)
+            {	
+            	//fprintf(vendas,"%s",vd[i].vexposicao);
+            	//fprintf(vendas,"|");
+                preco_final += 20;
+            }
+            else if (strcmp(vd[i].vexposicao, "'150 anos de Santos Drumont'") == 0)
+            {
+            	//fprintf(vendas,"%s",vd[i].vexposicao);
+            	//fprintf(vendas,"|");
+                preco_final += 30;
+            }
+            else if (strcmp(vd[i].vexposicao, "'Jogos Olimpicos de Paris 2024'") == 0)
+            {
+            	//fprintf(vendas,"%s",vd[i].vexposicao);
+            	//fprintf(vendas,"|");
+                preco_final += 40;
+            }
+            else if (strcmp(vd[i].vexposicao, "'Inteligencia artificial'") == 0)
+            {
+            	//fprintf(vendas,"%s",vd[i].vexposicao);
+            	//fprintf(vendas,"|");
+                preco_final += 50;
+            }
+        }
+        
+        
+		
+		strcpy(ad[i].exposicao, vd[i].vexposicao);
+        
+        printf("\nValor final: %i\n", preco_final);
+        
+		
+		
+		if (strcmp(vd[i].vassociado,"Associado")==0)
+		{
+			preco_final  = 0; 
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: ASSOCIADO/ISENTO\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if (strcmp(vd[i].beneficio_idade,"Menor de idade")==0)
+		{
+			preco_final = preco_final / 2;
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: MENOR DE 18 ANOS/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if (strcmp(vd[i].beneficio_idade,"Maior idade")==0)
+		{
+			preco_final = preco_final / 2;
+			
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: MAIOR DE 65 ANOS/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if(strcmp(vd[i].vestudante,"Estudante")==0)
+		{
+			preco_final = preco_final / 2;
+			
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+			printf("Beneficio: ESTUDANTE/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if(strcmp(vd[i].vpcd,"PCD")==0)
+		{
+			preco_final = preco_final / 2;
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+			printf("Beneficio: PCD/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else;
+		
+		
+		
+				
+		printf("\nEm 5 segundos voltaremos ao menu! :)");
+		sleep(5);
+		return;
+    }
+    fprint(vendas, "\n\n");
+    fclose(vendas);
+}
+
+void avaliar()
+{
+	FILE *vendas, *avaliacao;
+    char cpf[15];
+    int quantidade1;
+    int escolha;
+
+    avaliacao = fopen("avaliacoes.txt", "a");
+	vendas = fopen ("venda.txt","r");
+    quantidade1 = vd[i].quantidade;
+
+    if (vendas == NULL)
+    {
+        printf("Erro na abertura do arquivo.\n");
+        sleep(2);
+    }
+    else
+    
+	{
+    	if (avaliacao == NULL)
+    	{
+    		printf("Erro na abertura do arquivo.\n");
+    		sleep(2);
+		}
+		else
+		{
+			system ("cls");
+			top();
+        	printf("\n----------AVALIAR---------\n");
+        	printf("Digite seu CPF: ");
+        	scanf("%s", cpf);
+		
+        int preco_final = 0;
+
+        	// Loop para calcular o preço final
+	        for (int i = 0; i < quantidade1; i++)
+	        {
+	            printf("\nResumo da compra %d:\n", i + 1);
+	            printf("Exposicao escolhida: %s\n", vd[i].vexposicao);
+	
+	            if (strcmp(vd[i].vexposicao, "100 anos da semana da arte moderna") == 0)
+	            {	
+	            	printf("\nDIGITE 1 PARA AVALIAR '100 anos da semana da arte moderna'.v");
+	            }
+	            else if (strcmp(vd[i].vexposicao, "'150 anos de Santos Drumont'") == 0)
+	            {
+	            	printf("\nDIGITE 2 PARA AVALIAR '150 anos de Santos Drumont'.\n");
+	            }
+	            else if (strcmp(vd[i].vexposicao, "'Jogos Olimpicos de Paris 2024'") == 0)
+	            {
+	            	printf("\nDIGITE 3 PARA AVALIAR 'Jogos Olimpicos de Paris 2024'.\n");
+	            }
+	            else if (strcmp(vd[i].vexposicao, "'Inteligencia artificial'") == 0)
+	            {
+	            	printf("\nDIGITE 4 PARA AVALIAR 'Inteligencia artificial'.\n");
+	            }
+	            else
+	            {
+	            	printf("\nDIGITE 5 PARA VOLTAR.\n");
+				}
+        	}//for
+			
+			printf("\n\nDigite: ");
+			scanf("%i", &escolha);
+			
+			switch (escolha)
+			{
+				case 1: 
+					avaliacao_100anos();
+				break;
+				
+				case 2:
+					avaliacao_150santo();
+				break;
+				
+				case 3:
+					avaliacao_copa();
+				break;
+				
+				case 4: 
+					avaliacao_ia();
+				break;
+				
+				case 5:
+					return;
+				break;
+			}//switch
+		}//elseavaliacao
+	}//elsevendas
+	fclose (vendas);
+	fclose(avaliacao);
+}
+
+void avaliacao_100anos()
+{
+	FILE*avaliacao, *vendas;
+	char continuar[2];
+	top();
+	
+	avaliacao = fopen("avaliacoes.txt", "a");
+	vendas = fopen ("venda.txt","r");
+	
+	if(vendas == NULL)
+	{
+		printf("Erro ao abrir arquivo!");
+		sleep(2);
+		return;
+	}
+	else
+	{
+		if(avaliacao == NULL)
+		{
+			printf("Erro ao abrir arquivo!");
+			sleep(2);
+			return;
+		}
+		else
+		{
+			system ("cls");
+			printf("--------AVALIACAO--------\n\n");
+			printf("Exposicao escolhida: '100 anos da semana de arte moderna'");
+			snprintf(ad[i].exposicao, sizeof(ad[i].exposicao),"100 anos da semana da arte moderna");
+			fprintf(avaliacao, "|");
+			printf("\nDe 0 a 10 quanto gostou: ");
+			scanf("%f", &ad[i].gostou);
+			fprintf(avaliacao,"%f",ad[i].gostou);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto achou util: ");
+			scanf("%f", &ad[i].util);
+			fprintf(avaliacao,"%f",ad[i].util);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto recomenaria: ");
+			scanf("%f", &ad[i].recomenda);
+			fprintf(avaliacao,"%f",ad[i].recomenda);
+			fprintf(avaliacao,"|");
+			sleep(1);
+			
+			
+			while(1)
+			{
+			printf("\nObrigada pela avaliacao! Gostaria de avaliar alguma outra exposicao?(s/n) ");
+			scanf("%s", &continuar);
+			if(strcmp(continuar,"s")==0)
+			{
+				avaliar();
+			}
+			else if (strcmp(continuar,"n")==0)
+			{
+				printf("Aguarde 2 segunbdo que ira para o menu! :)");
+				sleep(2);
+				return;
+			}
+			else
+			{
+				printf("Errado! Tente novamente");
+			}
+			}
+		}
+	}
+	fprintf(avaliacao,"\n\n");
+	fclose(avaliacao);
+	fclose(vendas);
+}
+
+void avaliacao_150santo()
+{
+	
+	FILE*avaliacao, *vendas;
+	char continuar[2];
+	top();
+	
+	avaliacao = fopen("avaliacoes.txt", "a");
+	vendas = fopen ("venda.txt","r");
+	
+	if(vendas == NULL)
+	{
+		printf("Erro ao abrir arquivo!");
+		sleep(2);
+		return;
+	}
+	else
+	{
+		if(avaliacao == NULL)
+		{
+			printf("Erro ao abrir arquivo!");
+			sleep(2);
+			return;
+		}
+		else
+		{
+			system ("cls");
+			printf("--------AVALIACAO--------\n\n");
+			printf("Exposicao escolhida: '150 anos de Santos Drumont'");
+			snprintf(ad[i].exposicao, sizeof(ad[i].exposicao),"'150 anos de Santos Drumont'");
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto gostou: ");
+			scanf("%f", &ad[i].gostou);
+			fprintf(avaliacao,"%f",ad[i].gostou);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto achou util: ");
+			scanf("%f", &ad[i].util);
+			fprintf(avaliacao,"%f",ad[i].util);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto recomenaria: ");
+			scanf("%f", &ad[i].recomenda);
+			fprintf(avaliacao,"%f",ad[i].recomenda);
+			fprintf(avaliacao,"|");
+			sleep(3);
+			while(1)
+			{
+			printf("\nObrigada pela avaliacao! Gostaria de avaliar alguma outra exposicao?(s/n)");
+			scanf("%s", &continuar);
+			if(strcmp(continuar,"s")==0)
+			{
+				avaliar();
+			}
+			else if (strcmp(continuar,"n")==0)
+			{
+				printf("Aguarde 2 segunbdo que ira para o menu! :)");
+				sleep(2);
+				return;
+			}
+			else
+			{
+				printf("Errado! Tente novamente");
+			}
+			}
+		}
+	}
+	fprintf(avaliacao,"\n\n");
+	fclose(avaliacao);
+	fclose(vendas);
+}
+
+void avaliacao_copa()
+{
+	
+	FILE*avaliacao, *vendas;
+	char continuar[2];
+	top();
+	
+	avaliacao = fopen("avaliacoes.txt", "a");
+	vendas = fopen ("venda.txt","r");
+	
+	if(vendas == NULL)
+	{
+		printf("Erro ao abrir arquivo!");
+		sleep(2);
+		return;
+	}
+	else
+	{
+		if(avaliacao == NULL)
+		{
+			printf("Erro ao abrir arquivo!");
+			sleep(2);
+			return;
+		}
+		else
+		{
+			system ("cls");
+			printf("--------AVALIACAO--------\n\n");
+			printf("Exposicao escolhida: 'Jogos Olimpicos de Paris 2024'");
+			snprintf(ad[i].exposicao, sizeof(ad[i].exposicao),"Jogos Olimpicos de Paris 2024'");
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto gostou: ");
+			scanf("%f", &ad[i].gostou);
+			fprintf(avaliacao,"%f",ad[i].gostou);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto achou util: ");
+			scanf("%f", &ad[i].util);
+			fprintf(avaliacao,"%f",ad[i].util);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto recomenaria: ");
+			scanf("%f", &ad[i].recomenda);
+			fprintf(avaliacao,"%f",ad[i].recomenda);
+			fprintf(avaliacao,"|");
+			sleep(3);
+			while(1)
+			{
+			printf("\nObrigada pela avaliacao! Gostaria de avaliar alguma outra exposicao?(s/n)");
+			scanf("%s", &continuar);
+			if(strcmp(continuar,"s")==0)
+			{
+				avaliar();
+			}
+			else if (strcmp(continuar,"n")==0)
+			{
+				printf("Aguarde 2 segunbdo que ira para o menu! :)");
+				sleep(2);
+				return;
+			}
+			else
+			{
+				printf("Errado! Tente novamente");
+			}
+			}
+		}
+	}
+	fprintf(avaliacao,"\n\n");
+	fclose(avaliacao);
+	fclose(vendas);
+}		
+
+void avaliacao_ia()
+{
+	
+	FILE*avaliacao, *vendas;
+	char continuar[2];
+	top();
+	
+	avaliacao = fopen("avaliacoes.txt", "a");
+	vendas = fopen ("venda.txt","r");
+	
+	if(vendas == NULL)
+	{
+		printf("Erro ao abrir arquivo!");
+		sleep(2);
+		return;
+	}
+	else
+	{
+		if(avaliacao == NULL)
+		{
+			printf("Erro ao abrir arquivo!");
+			sleep(2);
+			return;
+		}
+		else
+		{
+			system ("cls");
+			printf("--------AVALIACAO--------\n\n");
+			printf("Exposicao escolhida: 'Inteligencia artificial'");
+			snprintf(ad[i].exposicao, sizeof(ad[i].exposicao),"'Inteligencia artificial'");
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto gostou: ");
+			scanf("%f", &ad[i].gostou);
+			fprintf(avaliacao,"%f",ad[i].gostou);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto achou util: ");
+			scanf("%f", &ad[i].util);
+			fprintf(avaliacao,"%f",ad[i].util);
+			fprintf(avaliacao,"|");
+			printf("\nDe 0 a 10 quanto recomenaria: ");
+			scanf("%f", &ad[i].recomenda);
+			fprintf(avaliacao,"%f",ad[i].recomenda);
+			fprintf(avaliacao,"|");
+			
+			sleep(3);
+			
+			while(1)
+			{
+			printf("\nObrigada pela avaliacao! Gostaria de avaliar alguma outra exposicao?(s/n)");
+			scanf("%s", &continuar);
+			if(strcmp(continuar,"s")==0)
+			{
+				avaliar();
+			}
+			else if (strcmp(continuar,"n")==0)
+			{
+				printf("Aguarde 2 segunbdo que ira para o menu! :)");
+				sleep(2);
+				return;
+			}
+			else
+			{
+				printf("Errado! Tente novamente");
+			}
+			}
+			
+		}
+	}
+	fprintf(avaliacao,"\n\n");
+	fclose(avaliacao);
+	fclose(vendas);
+}
+
+void exposicoes()
+{
+	int escolha;
+	int escolha2;
+	char continuar[2];
+	
+	top();
+	printf("-------------EXPOSICOES-------------\n\n");
+	printf("Selecione o tema desejado para ver resumo:\n1-Exposicao 100 anos da semana de arte moderna.\n2-Exposicao 150 anos de Santos Drumnt.\n3-Exposicao Jogos Olimpicos Paris 2024.\n4-Exposicao Inteligencia artificial.\n5-Voltar ao menu.\n");
+	printf("Escolha uma das opcoes acima! :)\n");
+	scanf("%i", &escolha);
+	
+	switch (escolha)
+	{
+		case 1:
+			system ("cls");
+			top();
+			printf("-------------EXPOSICOES-------------\n\n");
+			printf("A Semana de Arte Moderna, realizada em Sao Paulo em 1922, foi um marco na historia da arte brasileira e marcou o inicio do movimento modernista no Brasil. Aqui estao quatro obras que desempenharam papeis importantes durante esse evento:");
+			printf("\n\n1-Abaporu.\n2-A negra.\n3-Manifesto Antrofogo.\n4-Liberdade Guiando o povo.\nEscolha uma obra: \n");
+			scanf("%i", &escolha2);
+			
+			switch(escolha2)
+			{
+				case 1:
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Abaporu de Tarsila do Amaral: Esta e uma das obras mais iconicas da Semana de Arte Moderna. Pintada por Tarsila do Amaral em 1928, Abaporu representa uma figura estilizada e exagerada de uma mulher. A obra foi presenteada ao escritor Oswald de Andrade e e considerada um dos simbolos do movimento modernista no Brasil.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					break;
+					
+					case 2:
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("A Negra de Anita Malfatti: Anita Malfatti foi uma das artistas mais influentes da Semana de Arte Moderna e sua obra A Negra, de 1915, e um exemplo do seu estilo ousado e inovador. A pintura retrata uma figura feminina de forma expressionista, rompendo com as convencoes artisticas da epoca.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					break;
+					
+					case 3:
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Manifesto Antropfago de Oswald de Andrade: Embora nao seja uma obra de arte visual, o Manifesto Antropofago escrito por Oswald de Andrade e uma peÃ§a fundamental da Semana de Arte Moderna. Ele argumenta que o Brasil deveria devorar influencias estrangeiras e transforma-las em algo genuinamente brasileiro, incorporando elementos da cultura indigena e africana. Esse manifesto teve um impacto significativo na arte e na literatura modernista brasileira.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					break;
+					
+					case 4:
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Liberdade Guiando o Povo de Victor Meirelles: Embora nao tenha sido exibida na Semana de Arte Moderna, essa pintura de Victor Meirelles, concluida em 1888, e frequentemente mencionada no contexto do modernismo brasileiro. A obra retrata a independencia do Brasil em 1822 e e vista como um exemplo da arte academica que os modernistas buscavam questionar e superar.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					break;
+			}
+		break;
+		
+		case 2:
+			system ("cls");
+			top();
+			printf("-------------EXPOSICOES-------------\n\n");
+			printf("Santos Dumont nao era um pintor ou escultor, mas sim um famoso inventor e pioneiro da aviacao brasileiro. Ele e conhecido por suas contribuicoes para o desenvolvimento de aeronaves mais leves que o ar e mais pesadas que o ar, como o dirigivel e o aviao. Portanto, em vez de obras de arte, ele e lembrado por suas realizacoes tecnicas e maquinas voadoras. Aqui estao quatro das inovacoes e realizacoes mais notaveis de Santos Dumont:");
+			printf("\n\n1-14-Bis.\n2-Dirigiveis.\n3-Demoiselle.\n4-Premio Deutsch de la Meurthe.\nEscolha um: \n");
+			scanf("%i", &escolha2);
+			
+			switch(escolha2)
+			{
+				case 1:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("O 14-Bis foi uma das aeronaves mais famosas criadas por Santos Dumont. Em 1906, ele fez o primeiro voo publico oficial de um aviao em Paris com o 14-Bis, percorrendo uma distancia de 220 metros. Este e considerado um dos marcos da historia da aviacao.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					
+					break;
+					
+					
+					case 2:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf(" Santos Dumont tambem projetou dirigiveis, como o Santos-Dumont No. 6, que estabeleceu varios recordes de altitude e distancia em voos em 1901. Seu trabalho com dirigiveis contribuiu para o desenvolvimento da aviacao.");			
+				sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+					
+					case 3:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Santos Dumont projetou e construiu o Demoiselle em 1907, que foi uma das primeiras aeronaves leves e portateis do mundo. Foi uma inovacao significativa que ajudou a popularizar a aviacao pessoal.");		
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+					
+					case 4:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Santos Dumont venceu o Premio Deutsch de la Meurthe em 1901 ao circundar a Torre Eiffel em um de seus dirigiveis. Isso demonstrou a capacidade de dirigiveis para manobras em espaco urbano e contribuiu para sua reputacao como aviador.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+			}
+
+			
+			break;
+			
+			case 3:
+				
+				system ("cls");
+				top();
+			printf("-------------EXPOSICOES-------------\n\n");
+			printf("Os Jogos Olimpicos de Paris 2024 apresentam 32 esportes, incluindo o breaking e mudancas notaveis em modalidades como canoagem e pentatlo. Paris promete uma experiencia unica, com o rio Sena como cenario, e escolheu as Phryges como mascotes, simbolizando liberdade e inclusao.");
+			printf("\n\n1-Jogos Olimpicos de Paris 2024.\n2-Mudancas Notaveis nos Esportes.\n3-Eventos na Cidade Luz.\n4-Mascote Oficial.\nEscolha um: \n");
+			scanf("%i", &escolha2);
+			
+			switch (escolha2) 
+			{
+				case 1:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Jogos Olimpicos de Paris 2024: Os Jogos Olimpicos de Paris estao programados para ocorrer de 24 de julho a 11 de agosto de 2024, com 48 modalidades esportivas e 32 esportes, incluindo novidades como o breaking, uma forma de danca de rua baseada no Hip Hop.");			
+					
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+						
+					
+					
+					break;
+					
+					case 2:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Mudancas Notaveis nos Esportes: Houve varias mudancas notaveis em relacao aos Jogos Olimpicos anteriores, incluindo a inclusao do slalom extremo na canoagem, novas categorias de vela (Windsurf e Kitesurf), competicoes mistas em esportes como marcha atletica e tiro com arco, e alteracoes no pentatlo.");			
+					
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+					
+					case 3:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Eventos na Cidade Luz: Paris esta se preparando para sediar o evento e promete usar a beleza da cidade e o rio Sena como cenario, proporcionando uma experiencia unica tanto para os atletas quanto para os espectadores.");			
+					
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+					
+					case 4:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Mascote Oficial: As Phryges, pequenos barretes frigios, foram escolhidos como mascote oficial das Olimpiadas de Paris, representando valores de liberdade e inclusao, juntamente com o apoio a causas significativas.");			
+					
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+			}
+				
+				
+			break;
+			
+			case 4:
+				
+				system ("cls");
+				top();
+			printf("-------------EXPOSICOES-------------\n\n");
+			printf("A Inteligencia Artificial (IA) tem uma historia rica e fascinante que remonta as decadas de 1940 e 1950, quando pioneiros como Alan Turing comecaram a explorar a ideia de maquinas capazes de replicar o pensamento humano. Desde entao, a IA evoluiu significativamente, passando por marcos como o nascimento oficial do termo Inteligencia Artificial em 1956 e o desenvolvimento de sistemas especializados nas decadas posteriores.");
+			printf("\n\n1-Decadas de 1940 e 1950.\n2-1956 - O Nascimento da IA.\n3-O Teste de Turing.\n4-Decadas Posteriores.\nEscolha um: \n");
+			scanf("%i", &escolha2);
+			
+			switch(escolha2)
+			{
+				case 1:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Decadas de 1940 e 1950: Durante esse periodo, visionarios como Alan Turing e John von Neumann comecaram a explorar maquinas que poderiam replicar o pensamento humano. Alan Turing formalizou o conceito de algoritmo e estabeleceu as bases conceituais para o desenvolvimento da IA.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+					
+					case 2:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("1956 - O Nascimento da IA: O termo Inteligencia Artificial foi oficialmente cunhado em 1956 por John McCarthy, marcando o inicio da disciplina da IA como uma area de pesquisa formal. A conferencia de Dartmouth College desempenhou um papel crucial nesse marco.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+					
+					case 3:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("O Teste de Turing: Alan Turing propÃ´s o Teste de Turing em 1950 para avaliar o comportamento inteligente de maquinas. Esse teste continua sendo um topico central na IA.")		;	
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					break;
+					
+					case 4:
+			
+					system ("cls");
+					top();
+					printf("-------------EXPOSICOES-------------\n\n");
+					printf("Decadas Posteriores: A IA evoluiu ao longo das decadas, com o desenvolvimento de sistemas de processamento de linguagem natural, sistemas especializados como o MYCIN na decada de 1970 e, mais recentemente, o renascimento da IA impulsionado por avancos em aprendizado de maquina e poder computacional.");			
+					sleep(1);
+					while (1)
+					{
+						printf("\n\nDeseja ver mais um resumo das exposicoes?(s/n)");
+						scanf("%s", &continuar);
+						
+						if (strcmp(continuar,"s")==0)
+						{
+							exposicoes();
+						}
+						else if (strcmp(continuar,"n")==0)
+						{
+							return;
+						}
+						else
+						{
+							printf("\nCaractere invalido, responda novamente!");
+						}
+						
+					}
+					
+					break;
+			}
+				
+				break;
+				
+				case 5:
+					printf("Ok!");
+					sleep(1);
+					return;
+					
+					break;
+					
+			
+	}
+	
+	return;
+}
+
+void entrada()
+{
+    FILE *vendas;
+    char cpf[15];
+    int quantidade1;
+
+    vendas = fopen("venda.txt", "r");
+    quantidade1 = vd[i].quantidade;
+
+    if (vendas == NULL)
+    {
+        printf("Erro na abertura do arquivo.\n");
+    }
+    else
+    {
+        top();
+        printf("\n----------ENTRADA---------\n");
+        printf("Digite seu CPF: ");
+        scanf("%s", cpf);
+		
+        int preco_final = 0;
+
+        // Loop para calcular o preço final
+        for (int i = 0; i < quantidade1; i++)
+        {
+            printf("\nCompra %d:\n", i + 1);
+            printf("Exposicao escolhida: %s\n", vd[i].vexposicao);
+
+            if (strcmp(vd[i].vexposicao, "100 anos da semana da arte moderna") == 0)
+            {	
+            
+                preco_final += 20;
+            }
+            else if (strcmp(vd[i].vexposicao, "'150 anos de Santos Drumont'") == 0)
+            {
+            	
+                preco_final += 30;
+            }
+            else if (strcmp(vd[i].vexposicao, "'Jogos Olimpicos de Paris 2024'") == 0)
+            {
+            	
+                preco_final += 40;
+            }
+            else if (strcmp(vd[i].vexposicao, "'Inteligencia artificial'") == 0)
+            {
+            	
+                preco_final += 50;
+            }
+        }
+        
+        
+		
+        
+        printf("\nValor final: %i\n", preco_final);
+        
+		
+		
+		if (strcmp(vd[i].vassociado,"Associado")==0)
+		{
+			preco_final  = 0; 
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: ASSOCIADO/ISENTO\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if (strcmp(vd[i].beneficio_idade,"Menor de idade")==0)
+		{
+			preco_final = preco_final / 2;
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: MENOR DE 18 ANOS/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if (strcmp(vd[i].beneficio_idade,"Maior idade")==0)
+		{
+			preco_final = preco_final / 2;
+			
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: MAIOR DE 65 ANOS/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if(strcmp(vd[i].vestudante,"Estudante")==0)
+		{
+			preco_final = preco_final / 2;
+			
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+			printf("Beneficio: ESTUDANTE/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if(strcmp(vd[i].vpcd,"PCD")==0)
+		{
+			preco_final = preco_final / 2;
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+			printf("Beneficio: PCD/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else;
+		
+		printf("\n\nUma otima exposicao! Nao esqueca de avaliar apos! :)");
+		
+		printf("\nEm 5 segundos voltaremos ao menu!");
+		sleep(5);
+		return;
+        
+    }
+    fclose (vendas);
+}
+
+
+void acesso_ti()
+{
+	FILE*cadastros,*vendas, *avaliacao;
+	
+	int senha = 064775;
+	int tentativas = 3;
+	int tentsenha;
+	int escolha;
+	
+	cadastros = fopen ("cadastro_cliente.txt", "r");
+	vendas = fopen ("venda.txt", "r");
+	avaliacao = fopen ("avaliacoes.txt", "r");
+	
+	if (cadastros == NULL)
+	{
+		printf("Erro ao abrir arquivo cadastros.");
+		sleep(5);
+	}
+	else 
+	{
+		if (vendas == NULL)
+		{
+		printf("Erro ao abrir arquivo vendas.");
+		sleep(5);
+		}
+		else
+		{
+			if (avaliacao == NULL)
+			{
+				printf("Erro ao abrir arquivo avaliacao.");
+			sleep(5);
+			}
+			else
+			{
+				system ("cls");
+				top();
+				printf("---------ACESSO TI-------\n\n");
+				
+				
+				while (tentativas > 0)
+				{
+					
+					printf("Coloque a senha para acesso ao TI: ");
+					scanf("%i", &tentsenha);
+						
+						if(tentsenha == senha)
+						{
+							printf("Senha correta!\n");
+							sleep(2);
+							break;
+						}
+						else 
+						{
+							tentativas--;
+							if (tentativas > 0) 
+							{
+				                printf("Senha incorreta. Tente novamente. Restam %d tentativas.\n", tentativas);
+				            } 
+							else 
+							{
+				                printf("Tentativas esgotadas. A senha esta bloqueada.\n");
+				                return;
+				            }
+						}
+				}//while
+				system ("cls");
+				top();
+				printf("---------ACESSO TI-------\n\n");
+				printf("1-Listar cadastros.\n2-Pesquisar cliente.\n3-Pesquisar enttrada.\n4-Relatorio vendas.\n5-Relatorio avaliacoes.\n6-Pesquisar avaiacao.\n");
+				printf("Escolha: ");
+				scanf("%i", &escolha);
+				
+				switch (escolha)
+				{
+					case 1:
+						listar();
+					break;
+					
+					case 2:
+						pesquisar_cadastro();
+					break;
+					
+					case 3:
+						pesquisar_entrada();
+					break;
+					
+					case 4:
+						relatorio_venda();
+					break;
+					
+					case 5:
+						relatorio_avaliacoes();
+					break;
+				}
+				
+			}//avaliacao
+		}//vendas
+	}//cadastros
+	fclose (avaliacao);
+	fclose (vendas);
+	fclose (cadastros); 
+}
+
+void listar()
+{
+	FILE*cadastros;
+	
+	cadastros = fopen("cadastro_cliente.txt", "r");
+	
+	if (cadastros == NULL)
+	{
+		printf("Erro ao abrir arquivo.");
+	}
+	else
+	{
+		top();
+        printf("---------LISTA DE CADASTROS---------\n");
+
+        // Variáveis para armazenar os dados lidos
+        char nome[100];
+        char cpf[15];
+        char telefone[20];
+        int idade;
+        char beneficio_idade[50];
+        char genero[10];
+        char estudante[20];
+        char pcd[10];
+        char associado[20];
+
+        // Loop para ler e exibir os registros
+        while (fscanf(cadastros, "%s","%s","%s","%i","%s","%s","%s","%s","%s", nome, cpf, telefone, idade, beneficio_idade, genero, estudante, pcd, associado) != EOF)
+		
+        {
+            // Exibe os dados do cadastro na tela
+            printf("Nome: %s\n", nome);
+            printf("CPF: %s\n", cpf);
+            printf("Telefone: %s\n", telefone);
+            printf("Idade: %d\n", idade);
+            printf("Benefício de idade: %s\n", beneficio_idade);
+            printf("Gênero: %s\n", genero);
+            printf("Estudante: %s\n", estudante);
+            printf("PCD: %s\n", pcd);
+            printf("Associado: %s\n", associado);
+            printf("\n------------------------------------\n");
+        }
+        sleep(5);
+	}
+	fclose (cadastros);
+}
+
+void pesquisar_cadastro()
+{
+	FILE*cadastros;
+	char cpf[15];
+	char continuar[2];
+	
+	cadastros = fopen("cadastro_cliente.txt", "r");
+	
+	if (cadastros == NULL)
+	{
+		printf("Erro ao abrir arquivo.");
+		sleep(2);
+	}
+	else
+	{
+		top();
+        printf("---------PESQUISA DE CADASTRO---------\n");
+
+        printf("Digite o CPF do cliente desejado: ");
+        scanf("%s", &cpf);
+        
+        if(strcmp(cpf, cd[i].cpf)==0)
+        {
+        	printf("\nNome: %s",cd[i].nome);
+        	printf("\nCPF: %s",cd[i].cpf);
+        	printf("\nIdade: %i",cd[i].idade);
+        	printf("\nTem alguma beneficio de idade? %s",cd[i].beneficio_idade);
+        	printf("\nGenero: %s",cd[i].genero);
+        	printf("\n%s",cd[i].estudante);
+        	printf("\n%s",cd[i].pcd);
+        	printf("\n%s",cd[i].associado);
+        	
+        	while (1)
+        	{
+        		printf("\n\nDeseja pesquisar mais algum cadastros?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			pesquisar_cadastro();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+        	
+        	
+		}
+	}
+	fclose (cadastros);
+}
+
+void pesquisar_entrada()
+{
+	
+	FILE*vendas;
+	char cpf[15];
+	char continuar[2];
+	int quantidade1;
+	
+	vendas = fopen("venda.txt", "r");
+	
+	if (vendas == NULL)
+	{
+		printf("Erro ao abrir arquivo.");
+	}
+	else
+	{
+		top();
+        printf("\n----------PESQUISA DE ENTRADA---------\n");
+        printf("Digite seu CPF: ");
+        scanf("%s", cpf);
+		
+        int preco_final = 0;
+		quantidade1 = vd[i].quantidade;
+        // Loop para calcular o preço final
+        for (int i = 0; i < quantidade1; i++)
+        {
+            printf("\nCompra %d:\n", i + 1);
+            printf("Exposicao escolhida: %s\n", vd[i].vexposicao);
+
+            if (strcmp(vd[i].vexposicao, "100 anos da semana da arte moderna") == 0)
+            {	
+            
+                preco_final += 20;
+            }
+            else if (strcmp(vd[i].vexposicao, "'150 anos de Santos Drumont'") == 0)
+            {
+            	
+                preco_final += 30;
+            }
+            else if (strcmp(vd[i].vexposicao, "'Jogos Olimpicos de Paris 2024'") == 0)
+            {
+            	
+                preco_final += 40;
+            }
+            else if (strcmp(vd[i].vexposicao, "'Inteligencia artificial'") == 0)
+            {
+            	
+                preco_final += 50;
+            }
+        }
+        
+
+        
+        printf("\nValor final: %i\n", preco_final);
+        
+		
+		
+		if (strcmp(vd[i].vassociado,"Associado")==0)
+		{
+			preco_final  = 0; 
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: ASSOCIADO/ISENTO\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if (strcmp(vd[i].beneficio_idade,"Menor de idade")==0)
+		{
+			preco_final = preco_final / 2;
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: MENOR DE 18 ANOS/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if (strcmp(vd[i].beneficio_idade,"Maior idade")==0)
+		{
+			preco_final = preco_final / 2;
+			
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+		
+			printf("Beneficio: MAIOR DE 65 ANOS/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if(strcmp(vd[i].vestudante,"Estudante")==0)
+		{
+			preco_final = preco_final / 2;
+			
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+			printf("Beneficio: ESTUDANTE/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else if(strcmp(vd[i].vpcd,"PCD")==0)
+		{
+			preco_final = preco_final / 2;
+			vd[i].vpreco = preco_final;
+        fprintf(vendas,"%i",vd[i].vpreco);
+        fprintf(vendas,"|");
+			printf("Beneficio: PCD/MEIA ENTRADA\n");
+			printf("Valor com desconto: %i", preco_final);
+		}
+		else;
+		
+		while (1)
+        	{
+        		printf("\n\nDeseja pesquisar mais algum cadastros?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			pesquisar_entrada();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+
+	}
+	fclose (vendas);
+}
+
+void relatorio_venda()
+{
+	FILE*vendas;
+	int escolha;
+	int escolha_idade;
+	char continuar[2];
+	
+	int criancas = 0;
+    		int adolescentes = 0;
+    		int jovensAdultos = 0;
+    		int adultos = 0;
+    		int terceiraIdade = 0;
+    		int feminino = 0;
+				int masculino = 0;
+				int anonimo = 0;
+				
+				
+		int estudante = 0;
+				int nao_estudante = 0;
+				
+				int pcd = 0;
+				int nao_pcd = 0;
+				
+				int associado = 0;
+				int nao_associado = 0;
+				
+				int exposicao1_vendas = 0;
+				int exposicao2_vendas = 0;
+				int exposicao3_vendas = 0;
+				int exposicao4_vendas = 0;
+				
+				float exposicao1_valor = 0.0;
+				float exposicao2_valor = 0.0;
+				float exposicao3_valor = 0.0;
+				float exposicao4_valor = 0.0;
+				
+				
+				
+				
+    		
+    		
+	vendas = fopen("venda.txt", "r");
+	
+	if (vendas == NULL)
+	{
+		printf("Erro ao abrir arquivo.");
+	}
+	else
+	{	
+		system("cls");
+		top();
+        printf("---------RELATORIO DE VENDAS---------\n");
+		
+		printf("\n\n1-IDADE.");
+		printf("\n2-GENERO.");
+		printf("\n3-ESTUDANTE.");
+		printf("\n4-PCD.");
+		printf("\n5-ASSOCIADOS.");
+		printf("\n6-EXPOSICAO.");
+		printf("\n7-Listagem de todas as vendas.");
+		printf("\nEscolha: ");
+		scanf("%i", &escolha);
+		
+		switch(escolha)
+		{	
+		
+			
+
+			case 1: 
+			
+
+    		
+    		while (fscanf(vendas, "%i", vd[i].vidade) == 1) 
+			{
+			    if (vd[i].vidade <= 12) 
+				{
+			        criancas++;
+			    } 
+				else if (vd[i].vidade <= 18)
+				{
+			        adolescentes++;
+			    } 
+				else if (vd[i].vidade <= 30) 
+				{
+			        jovensAdultos++;
+			    } 
+				else if (vd[i].vidade <= 55) 
+				{
+			        adultos++;
+			    } 
+				else 
+				{
+			        terceiraIdade++;
+			    }
+			}
+			
+			system("cls");
+			top();
+        	printf("---------RELATORIO DE VENDAS---------\n");
+        	printf("---------------IDADE-----------------\n\n");
+        	printf("Crianças (0 a 12 anos): %d vendas\n", criancas);
+		    printf("Adolescentes (12 a 18 anos): %d vendas\n", adolescentes);
+		    printf("Jovens Adultos (18 a 30 anos): %d vendas\n", jovensAdultos);
+		    printf("Adultos (30 a 55 anos): %d vendas\n", adultos);
+		    printf("Terceira Idade (55+ anos): %d vendas\n", terceiraIdade);
+		    
+		    while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			break;
+				
+			case 2:
+				
+				
+				
+				while (fscanf(vendas, "%s", vd[i].vgenero) == 1) 
+				{
+				    if (strcmp(vd[i].vgenero, "Feminino") == 0) 
+					{
+				        feminino++;
+				    } 
+					else if (strcmp(vd[i].vgenero, "Masculino") == 0) 
+					{
+				        masculino++;
+				    } 
+					else 
+					{
+				        anonimo++;
+				    }
+				}
+				
+			system("cls");
+			top();
+        	printf("---------RELATORIO DE VENDAS---------\n");
+        	printf("---------------GENERO-----------------\n\n");
+        	printf("Masculino: %d vendas\n", masculino);
+		    printf("Femenino: %d vendas\n", feminino);
+		    printf("Anonimo: %d vendas\n", anonimo);
+		    
+		    while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			
+			break;
+				
+				case 3:
+				
+	
+				
+				while (fscanf(vendas, "%s", vd[i].vestudante) == 1) 
+				{
+				    if (strcmp(vd[i].vestudante, "Estudante") == 0) 
+					{
+				        estudante++;
+				    }  
+					else 
+					{
+				        nao_estudante++;
+				    }
+				}
+				
+			system("cls");
+			top();
+        	printf("---------RELATORIO DE VENDAS---------\n");
+        	printf("---------------ESTUDANTE-----------------\n\n");
+        	printf("Estudante: %d vendas\n", estudante);
+		    printf("Nao estudante: %d vendas\n", nao_estudante);
+		    
+		    while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			
+			break;
+				
+				case 4:
+				
+				
+				
+				while (fscanf(vendas, "%s", vd[i].vpcd) == 1) 
+				{
+				    if (strcmp(vd[i].vpcd, "PCD") == 0) 
+					{
+				        pcd++;
+				    }  
+					else 
+					{
+				        nao_pcd++;
+				    }
+				}
+				
+			system("cls");
+			top();
+        	printf("---------RELATORIO DE VENDAS---------\n");
+        	printf("---------------PCD-----------------\n\n");
+        	printf("PCD: %d vendas\n", pcd);
+		    printf("Nao PCD: %d vendas\n", nao_pcd);
+		    
+		    while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			
+			break;
+				
+				case 5:
+				
+				
+				
+				while (fscanf(vendas, "%s", vd[i].vassociado) == 1) 
+				{
+				    if (strcmp(vd[i].vassociado, "Associado") == 0) 
+					{
+				        associado++;
+				    }  
+					else 
+					{
+				        nao_associado++;
+				    }
+				}
+				
+			system("cls");
+			top();
+        	printf("---------RELATORIO DE VENDAS---------\n");
+        	printf("---------------ASSOCIADO-----------------\n\n");
+        	printf("Estudante: %d vendas\n", associado);
+		    printf("Nao estudante: %d vendas\n", nao_associado);
+		    
+		    while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			
+			break;
+			
+			case 6:
+				
+			
+				
+				
+				while (fscanf(vendas, "%s", vd[i].vexposicao) == 1) 
+				{
+				    if (strcmp(vd[i].vexposicao, "100 anos da semana da arte moderna") == 0)
+					{
+				        exposicao1_vendas++;
+				        exposicao1_valor += 20.0; 
+				    } 
+					else if (strcmp(vd[i].vexposicao, "150 anos de Santos Drumont") == 0) 
+					{
+				        exposicao2_vendas++;
+				        exposicao2_valor += 30.0; 
+				    } 
+					else if (strcmp(vd[i].vexposicao, "Jogos Olimpicos de Paris 2024") == 0) 
+					{
+				        exposicao3_vendas++;
+				        exposicao3_valor += 40.0; 
+				    } 
+					else if (strcmp(vd[i].vexposicao, "Inteligencia artificial") == 0) 
+					{
+				        exposicao4_vendas++;
+				        exposicao4_valor += 50.0; 
+				    }
+				}
+				system("cls");
+				top();
+	        	printf("---------RELATORIO DE VENDAS---------\n");
+	        	printf("---------------EXPOSICAO-----------------\n\n");
+				printf("Relatório de Vendas por Exposição:\n");
+				printf("100 anos da semana da arte moderna: %d vendas, Total: R$ %.2f\n", exposicao1_vendas, exposicao1_valor);
+				printf("150 anos de Santos Drumont: %d vendas, Total: R$ %.2f\n", exposicao2_vendas, exposicao2_valor);
+				printf("Jogos Olimpicos de Paris 2024: %d vendas, Total: R$ %.2f\n", exposicao3_vendas, exposicao3_valor);
+				printf("Inteligencia artificial: %d vendas, Total: R$ %.2f\n", exposicao4_vendas, exposicao4_valor);
+
+					    
+		    while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			
+			break;
+			
+			case 7:
+				
+				system("cls");
+				top();
+	        	printf("---------RELATORIO DE VENDAS---------\n");
+	        	printf("---------------LISTA-----------------\n\n");
+	
+	        char nome[100];
+	        char cpf[15];
+	        char beneficio_idade[50];
+	        char genero[10];
+	        char estudante[20];
+	        char pcd[10];
+	        char associado[20];
+	        int valor;
+	
+	        while (fscanf(vendas, "%s %s %s %s %s %s %s %s %i", vd[i].vnome, vd[i].vcpf, vd[i].beneficio_idade, vd[i].vgenero, vd[i].vestudante, vd[i].vpcd, vd[i].vassociado, vd[i].vpreco ) != EOF)
+	        {
+	            printf("Nome: %s\n", vd[i].vnome);
+	            printf("CPF: %s\n", vd[i].vcpf);
+	            printf("%s\n", vd[i].beneficio_idade);
+	            printf("Genero: %d\n", vd[i].vgenero);
+	            printf("Gênero: %s\n", genero);
+	            printf("Estudante: %s\n", vd[i].vestudante);
+	            printf("PCD: %s\n", vd[i].vpcd);
+	            printf("Associado: %s\n", vd[i].vassociado);
+	            printf("Preco: %s\n", vd[i].vpreco);
+	            printf("\n------------------------------------\n");
+	        }
+	        
+	        while (1)
+        	{
+        		printf("\n\nDeseja verificar mais algum tipo?(s/n)  ");
+        		scanf("%s", &continuar);
+        		
+        		if(strcmp(continuar,"s")==0)
+        		{
+        			relatorio_venda();
+				}
+				else if(strcmp(continuar,"n")==0)
+				{
+					return;
+				}
+				else
+				{
+					printf("\nNumero invalido, responda novamente\n");
+				}
+			}
+			
+			break;
+				
+		}
+
+	}
+	fclose (vendas);
+}
+
+void relatorio_avaliacoes()
+{
+	FILE*avaliacao;
+	
+	avaliacao = fopen ("avaliacoes.txt", "r");
+	
+	if (avaliacao == NULL)
+	{
+		printf("Erro ao entrar no arquivo!");
+	}
+	else
+	{
+		
+		system("cls");
+		top();
+		printf("---------RELATORIO DE AVALIACAO---------\n\n");
+		
+		
+		char nome[50];
+        char cpf[15];
+        char genero[10];
+        int idade;
+        float gostou;
+		float util;
+		float recomenda;
+		char exposicao[50];
+		
+		strcpy(vd[i].vnome, ad[i].nome);
+		strcpy(vd[i].vcpf, ad[i].cpf);
+		strcpy(vd[i].vgenero, ad[i].genero);
+		vd[i].vidade = ad[i].idade;
+
+        while (fscanf(avaliacao, "%s %s %s %d %s %f %f %f", ad[i].nome, ad[i].cpf, ad[i].genero, ad[i].idade, ad[i].exposicao, ad[i].gostou, ad[i].util, ad[i].recomenda) != EOF)
+        {
+            
+            printf("Nome: %s\n", ad[i].nome);
+            printf("CPF: %s\n", ad[i].cpf);
+            printf("Idade: %d\n", ad[i].idade);
+            printf("Gênero: %s\n", ad[i].genero);
+			printf("Exposicao avaliada: %s", ad[i].exposicao);
+			printf("Gostou: %2.f", ad[i].gostou);
+			printf("Util: %2.f", ad[i].util);
+			printf("Recomenda: %2.f", ad[i].recomenda);
+            printf("\n------------------------------------\n");
+        }
+		
+		
+		
+	}
+	fclose(avaliacao);
+}
+
+void pesquisa_avaliacao()
+{
+	FILE*avaliacao;
+	int escolha;
+	char continuar[2];
+	
+	avaliacao = fopen ("avaliacoes.txt", "r");
+	
+	if (avaliacao == NULL)
+	{
+		printf("Erro ao entrar no arquivo!");
+	}
+	else
+	{
+		
+		system("cls");
+		top();
+		printf("---------PESQUISA DE AVALIACAO---------\n\n");
+		
+		printf("\n1-'100 anos da semana de arte moderna'.\n2-'150 anos de Santos Drumont'.\n3-'Jogos Olimpicos de Paris 2024'.\n4-'Inteligencia artificial'.\n5-Voltar.\nQual exposicao deseja ver as avaliacoes? ");
+		scanf("%i", &escolha);
+		
+		switch(escolha)
+		{
+			case 1: 
+				system("cls");
+			top();
+			printf("---------PESQUISA DE AVALIACAO---------\n\n");
+			while(fscanf(avaliacao,"%s %f %f %f", ad[i].exposicao,ad[i].gostou, ad[i].util, ad[i].recomenda)!= EOF)
+			{
+				if (strcmp(ad[i].exposicao,"100 anos da semana de arte moderna")==0)
+				printf("Voce escolheu ver as avaliacoes de 100 anos da semana de arte moderna.\n\n");
+				printf("Gostou: %2.f", ad[i].gostou);
+				printf("Util: %2.f", ad[i].util);
+				printf("Recomenda: %2.f", ad[i].recomenda);
+				
+				while (1)
+				{
+					printf("Deseja ver avaliacoes de outras exposicoes?(s/n) ");
+					scanf("%s", &continuar);
+					
+					if(strcmp(continuar, "s")==0)
+					{
+						pesquisa_avaliacao();
+					}
+					else if(strcmp(continuar, "n")==0)
+					{
+						return;
+					}
+					else
+					{
+						printf("Caractere invalido, escolha outro!\n");
+					}
+				}
+			}
+				
+			break;
+				
+				case 2: 
+				system("cls");
+			top();
+			printf("---------PESQUISA DE AVALIACAO---------\n\n");
+			while(fscanf(avaliacao,"%s %f %f %f", ad[i].exposicao,ad[i].gostou, ad[i].util, ad[i].recomenda)!= EOF)
+			{
+				if (strcmp(ad[i].exposicao,"'150 anos de Santos Drumont'")==0)
+				printf("Voce escolheu ver as avaliacoes de 150 anos de Santos Drumont.\n\n");
+				printf("Gostou: %2.f", ad[i].gostou);
+				printf("Util: %2.f", ad[i].util);
+				printf("Recomenda: %2.f", ad[i].recomenda);
+				
+				while (1)
+				{
+					printf("Deseja ver avaliacoes de outras exposicoes?(s/n) ");
+					scanf("%s", &continuar);
+					
+					if(strcmp(continuar, "s")==0)
+					{
+						pesquisa_avaliacao();
+					}
+					else if(strcmp(continuar, "n")==0)
+					{
+						return;
+					}
+					else
+					{
+						printf("Caractere invalido, escolha outro!\n");
+					}
+				}
+			}
+				
+			break;
+				
+				case 3: 
+				system("cls");
+			top();
+			printf("---------PESQUISA DE AVALIACAO---------\n\n");
+			while(fscanf(avaliacao,"%s %f %f %f", ad[i].exposicao,ad[i].gostou, ad[i].util, ad[i].recomenda)!= EOF)
+			{
+				if (strcmp(ad[i].exposicao,"'Jogos Olimpicos de Paris 2024'")==0)
+				printf("Voce escolheu ver as avaliacoes de Jogos Olimpicos de Paris 2024.\n\n");
+				printf("Gostou: %2.f", ad[i].gostou);
+				printf("Util: %2.f", ad[i].util);
+				printf("Recomenda: %2.f", ad[i].recomenda);
+				
+				while (1)
+				{
+					printf("Deseja ver avaliacoes de outras exposicoes?(s/n) ");
+					scanf("%s", &continuar);
+					
+					if(strcmp(continuar, "s")==0)
+					{
+						pesquisa_avaliacao();
+					}
+					else if(strcmp(continuar, "n")==0)
+					{
+						return;
+					}
+					else
+					{
+						printf("Caractere invalido, escolha outro!\n");
+					}
+				}
+			}
+				
+			break;
+			
+			case 4: 
+				system("cls");
+			top();
+			printf("---------PESQUISA DE AVALIACAO---------\n\n");
+			while(fscanf(avaliacao,"%s %f %f %f", ad[i].exposicao,ad[i].gostou, ad[i].util, ad[i].recomenda)!= EOF)
+			{
+				if (strcmp(ad[i].exposicao,"'Inteligencia artificial'")==0)
+				printf("Voce escolheu ver as avaliacoes de Inteligencia artificial.\n\n");
+				printf("Gostou: %2.f", ad[i].gostou);
+				printf("Util: %2.f", ad[i].util);
+				printf("Recomenda: %2.f", ad[i].recomenda);
+				
+				while (1)
+				{
+					printf("Deseja ver avaliacoes de outras exposicoes?(s/n) ");
+					scanf("%s", &continuar);
+					
+					if(strcmp(continuar, "s")==0)
+					{
+						pesquisa_avaliacao();
+					}
+					else if(strcmp(continuar, "n")==0)
+					{
+						return;
+					}
+					else
+					{
+						printf("Caractere invalido, escolha outro!\n");
+					}
+				}
+			}
+				
+			break;
+			
+			case 5: 
+				system("cls");
+			top();
+			printf("---------PESQUISA DE AVALIACAO---------\n\n");
+			printf("Voltando em segundos...");
+			sleep(2);
+			return;
+				
+			break;
+		}
+		
+		
+	
+		
+		
+		
+	}
+	fclose(avaliacao);
+}
